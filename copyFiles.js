@@ -9,7 +9,7 @@ const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
 
 async function copyFile() {
-  // Copies the files in the folder to the same bucket
+  // Copies the files in the folder to the other folder in the same bucket
   await storage.bucket(BucketName).file(srcFilename).copy(destFilename);
 
   console.log(
