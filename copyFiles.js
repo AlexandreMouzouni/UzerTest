@@ -1,5 +1,5 @@
 const BucketName = 'montri-prod.appspot.com';
-const srcFilename = 'NCA/preResources';
+const srcFilenames = 'NCA/preResources';
 const destFilename = 'NCA/resources';
 
 // Imports the Google Cloud client library
@@ -9,11 +9,21 @@ const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
 
 async function copyFile() {
-  // Copies the files in the folder to the other folder in the same bucket
-  await storage.bucket(BucketName).file(srcFilename).copy(destFilename);
+  // Retrieves all files from bucket
+  
+  const [sourceFiles] = await storage.bucket(BucketName).getFiles({ prefix: srcFilenames});
+
+  const sourceFileNames = sourceFiles.map(
+    (file) => file.name);
+  
+  // Copy the files in the folder to the other folder in the same bucket
+  for (let fileName of sourceFileNames) {
+  await storage.bucket(BucketName).file(fileName).copy(destFilename);
+
+  }
 
   console.log(
-    `gs://${BucketName}/${srcFilename} copied to gs://${BucketName}/${destFilename}.`
+    `gs://${BucketName}/${srcFilenames} copied to gs://${BucketName}/${destFilename}.`
   );
 }
 
