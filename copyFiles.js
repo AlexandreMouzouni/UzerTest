@@ -11,7 +11,7 @@ const storage = new Storage();
 async function copyFile() {
   // Retrieves all files from bucket
   
-  const [sourceFiles] = await storage.bucket(BucketName).getFiles({ prefix: srcFilenames});
+  const [sourceFiles] = await storage.bucket(BucketName).getFiles({ directory: srcFilenames});
 
   const sourceFileNames = sourceFiles.map(
     (file) => file.name);
